@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API FORM</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    function updateFields() {
+      var ucid = document.getElementById("ucid");
+      var product = document.getElementById("product");
+      var product_code = document.getElementById("product_code");
+
+      var selectedProductProduct = ucid.value;
+
+      switch (selectedProductProduct) {
+        case "1":
+          product.value = "Life";
+          product_code.value = "LI";
+          break;
+        case "2":
+          product.value = "Funeral";
+          product_code.value = "FP";
+          break;
+        case "3":
+          product.value = "STI (Short-term insurance)";
+          product_code.value = "ST";
+          break;
+        default:
+          product.value = "";
+          product_code.value = "";
+          break;
+      }
+    }
+
+    function updateUCID() {
+      var ucid = document.getElementById("ucid");
+      var product = document.getElementById("product");
+      var product_code = document.getElementById("product_code");
+
+      var selectedProduct = product.value;
+
+      switch (selectedProduct) {
+        case "Life":
+          ucid.value = "1";
+          product_code.value = "LI";
+          break;
+        case "Funeral":
+          ucid.value = "2";
+          product_code.value = "FP";
+          break;
+        case "STI (Short-term insurance)":
+          ucid.value = "3";
+          product_code.value = "ST";
+          break;
+        default:
+          ucid.value = "";
+          product_code.value = "";
+          break;
+      }
+    }
+
+    function updateProductCode() {
+      var ucid = document.getElementById("ucid");
+      var product = document.getElementById("product");
+      var product_code = document.getElementById("product_code");
+
+      var selectedProductCode = product_code.value;
+
+      switch (selectedProductCode) {
+        case "LI":
+          ucid.value = "1";
+          product.value = "Life";
+          break;
+        case "FP":
+          ucid.value = "2";
+          product.value = "Funeral";
+          break;
+        case "ST":
+          ucid.value = "3";
+          product.value = "STI (Short-term insurance)";
+          break;
+        default:
+          ucid.value = "";
+          product.value = "";
+          break;
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <img style="height:70px;" src="/img/iWYZE.png" alt="iWYZE Online Valuables Insurance">
+  <div class="container">
+    <div class="header">
+      <h2>Submit Single Lead</h2>
+    </div>
+    <form id="myForm">
+      <label for="productCode">Product Code:<span class="red">&#42;</span></label><br>
+      <select name="product_codes" id="productCode" onchange="updateProductCode()" required="true">
+        <option value="LI">LI</option>
+        <option value="FP">FP</option>
+        <option value="ST">ST</option>
+      </select><br>
+      <label for="ucid">UCID:<span class="red">&#42;</span></label><br>
+      <select name="UCID" id="ucid" onchange="updateFields()" required="true">
+        <option value="1">SLIWYZE_IL_BPBP0001</option>
+        <option value="2">SLIWYZE_IF_BPBP0001</option>
+        <option value="3">SLIWYZE_RM_BPBP0001</option>
+      </select> </br>
+      <label for="emailAddress">Email Address:<span class="red">&#42;</span></label><br>
+      <input type="text" id="emailAddress" name="emailAddress"><br>
+      <label for="firstName">First Name:<span class="red">&#42;</span></label><br>
+      <input type="text" id="firstName" name="firstName"><br>
+      <label for="surname">Surname:<span class="red">&#42;</span></label><br>
+      <input type="text" id="surname" name="surname"><br>
+      <label for="phoneNumber">Phone Number:<span class="red">&#42;</span></label><br>
+      <input type="text" id="phoneNumber" name="phoneNumber"><br>
+      <label for="idNumber">ID Number:</label><br>
+      <input type="text" id="idNumber" name="idNumber"><br>
+      <label for="externalReferenceId">External Reference ID:<span class="red">&#42;</span></label><br>
+      <input type="text" id="externalReferenceId" name="externalReferenceId"><br>
+      <label for="contactType">Contact Type:</label><br>
+      <select name="client-title" id="contactType" class="box-in-boxes" required="true">
+        <option value="1">CALLBACK</option>
+      </select><br><br>
+      <label for="checkbox">
+        Have you have had a conversation with the customer and has he/she has expressed an interest in
+        receiving a short-term insurance quote from Old Mutual iWYZE?</label>
+      <br>
+      <input type="checkbox" name="yes" id="checkbox_1" required="true" class="checkboxer"><br>
+      <label for="checkbox">
+        Do you confirm that the customer has given consent for Old Mutual iWYZE to contact him/her?</label>
+      <br>
+      <input type="checkbox" name="yess" id="checkbox_2" required="true" class="checkboxer">
+      <br>
+      <label for="attatch">Attach Document</label>
+      <br>
+      <input type="file" name="document" id="file">
+      <br>
+      <label for="notes-add">Additional Notes</label>
+      <br>
+      <textarea name="message" id="notes" cols="50" rows="4" placeholder="Type your message here."></textarea>
+      <br>
+      <input type="submit" value="Submit">
+  </div>
+  </form>
+
+  <script>
+    document.getElementById("myForm").onsubmit = function () {
+      var form = document.getElementById("myForm");
+      var formData = new FormData(form);
+      var object = {};
+      formData.forEach(function (value, key) {
+        object[key] = value;
+      });
+      var json = JSON.stringify(object);
+
+      fetch('http://localhost:3000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: json
+      }).then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
+      return false;
+    };
+
+  </script>
+
+</body>
+
+</html>
